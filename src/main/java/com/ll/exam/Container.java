@@ -58,21 +58,21 @@ public class Container {
     }
 
     public static void scanRepositories(){
-        Reflections ref = new Reflections("com.ll.exam");
+        Reflections ref = new Reflections(App.BASE_PACKAGE_PATH);
         for(Class<?> cls : ref.getTypesAnnotatedWith(Repository.class)){
             objects.put(cls, Util.cls.newObj(cls,null));
         }
     }
 
     public static void scanServices(){
-        Reflections ref = new Reflections("com.ll.exam");
+        Reflections ref = new Reflections(App.BASE_PACKAGE_PATH);
         for(Class<?> cls : ref.getTypesAnnotatedWith(Service.class)){
             objects.put(cls, Util.cls.newObj(cls,null));
         }
     }
 
     public static void scanControllers(){
-        Reflections ref = new Reflections("com.ll.exam");
+        Reflections ref = new Reflections(App.BASE_PACKAGE_PATH);
         for(Class<?> cls : ref.getTypesAnnotatedWith(Controller.class)){
             objects.put(cls, Util.cls.newObj(cls,null));
         }
