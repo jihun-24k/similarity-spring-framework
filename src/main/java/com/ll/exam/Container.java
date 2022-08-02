@@ -2,6 +2,7 @@ package com.ll.exam;
 
 import com.ll.exam.annotation.AutoWired;
 import com.ll.exam.annotation.Controller;
+import com.ll.exam.annotation.Repository;
 import com.ll.exam.annotation.Service;
 import org.reflections.Reflections;
 
@@ -16,8 +17,9 @@ public class Container {
     }
 
     public static void scanComponents(){
-        scanService();
-        scanController();
+        scanRepositories();
+        scanServices();
+        scanControllers();
 
         // 모든 컴포넌트들을 의존성을 해결해주는 메소드
         resolveDependenciesAllComponents();
@@ -55,14 +57,21 @@ public class Container {
 
     }
 
-    public static void scanService(){
+    public static void scanRepositories(){
+        Reflections ref = new Reflections("com.ll.exam");
+        for(Class<?> cls : ref.getTypesAnnotatedWith(Repository.class)){
+            objects.put(cls, Util.cls.newObj(cls,null));
+        }
+    }
+
+    public static void scanServices(){
         Reflections ref = new Reflections("com.ll.exam");
         for(Class<?> cls : ref.getTypesAnnotatedWith(Service.class)){
             objects.put(cls, Util.cls.newObj(cls,null));
         }
     }
 
-    public static void scanController(){
+    public static void scanControllers(){
         Reflections ref = new Reflections("com.ll.exam");
         for(Class<?> cls : ref.getTypesAnnotatedWith(Controller.class)){
             objects.put(cls, Util.cls.newObj(cls,null));

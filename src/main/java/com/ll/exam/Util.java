@@ -1,8 +1,30 @@
 package com.ll.exam;
 
+import javax.management.Descriptor;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 
 public class Util {
+    public static class reflection{
+        public static <T> T getFieldValue(Object o, String fieldName, T defaultValue) {
+            Field field = null;
+
+            try {
+                field = o.getClass().getDeclaredField(fieldName);
+            } catch (NoSuchFieldException e) {
+                return defaultValue;
+            }
+
+            field.setAccessible(true);
+
+            try {
+                return (T)field.get(o);
+            } catch (IllegalAccessException e) {
+                return defaultValue;
+            }
+        }
+    }
+
     public static class cls{
         public static <T> T newObj(Class cls, Object defaultValue){
             try {

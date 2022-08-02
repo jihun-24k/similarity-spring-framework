@@ -68,14 +68,6 @@ public class AppTest {
     }
 
     @Test
-    public void ioc__resolveComponents(){
-        ArticleController articleController = Container.getObj(ArticleController.class);
-        ArticleService articleService = articleController.getArticleServiceTest();
-
-        assertThat(articleService).isNotNull();
-    }
-
-    @Test
     public void ioc__articleRepository(){
         ArticleRepository articleRepository = Container.getObj(ArticleRepository.class);
         assertThat(articleRepository).isNotNull();
@@ -87,5 +79,22 @@ public class AppTest {
         ArticleRepository articleRepository2 = Container.getObj(ArticleRepository.class);
 
         assertThat(articleRepository1).isEqualTo(articleRepository2);
+    }
+
+    @Test
+    public void ioc__resolveComponents__ContoSer(){
+        ArticleController articleController = Container.getObj(ArticleController.class);
+        ArticleService articleService = Util.reflection.getFieldValue(articleController, "articleService", null);
+
+        assertThat(articleService).isNotNull();
+    }
+
+    @Test
+    public void ioc__resolveComponents__SertoRep() {
+        ArticleService articleService = Container.getObj(ArticleService.class);
+
+        ArticleRepository articleRepository = Util.reflection.getFieldValue(articleService, "articleRepository", null);
+
+        assertThat(articleRepository).isNotNull();
     }
 }
