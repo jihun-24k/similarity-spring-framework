@@ -4,9 +4,9 @@ import java.lang.reflect.InvocationTargetException;
 
 public class Util {
     public static class cls{
-        public static Object newObj(Class cls, Object defaultValue){
+        public static <T> T newObj(Class cls, Object defaultValue){
             try {
-                return cls.getDeclaredConstructor().newInstance();
+                return (T) cls.getDeclaredConstructor().newInstance();
             } catch (InstantiationException e) {
                 throw new RuntimeException(e);
             } catch (IllegalAccessException e) {
