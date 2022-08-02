@@ -22,7 +22,7 @@ public class AppTest {
     }
 
     @Test
-    public void ioc__articleController__2() {
+    public void ioc__articleController__withSigleton() {
         ArticleController articleController1 = Container.getArticleController();
         ArticleController articleController2 = Container.getArticleController();
 
@@ -30,7 +30,7 @@ public class AppTest {
     }
 
     @Test
-    public void ioc__dd() {
+    public void ioc__searchAllControllerAnnotationClass() {
         List<String> controllerNames = Container.getAllControllerNames();
 
         controllerNames.contains("home");
