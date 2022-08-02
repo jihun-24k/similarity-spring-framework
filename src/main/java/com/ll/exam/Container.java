@@ -1,23 +1,60 @@
 package com.ll.exam;
 
+import com.ll.exam.annotation.AutoWired;
 import com.ll.exam.annotation.Controller;
 import com.ll.exam.annotation.Service;
 import com.ll.exam.article.controller.ArticleController;
 import com.ll.exam.home.article.HomeController;
 import org.reflections.Reflections;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Container {
     private static Map<Class, Object> objects;
 
     static {
         objects = new HashMap<>();
+        scanComponents();
+    }
+
+    public static void scanComponents(){
         scanService();
         scanController();
+
+        // 모든 컴포넌트들을 의존성을 해결해주는 메소드
+        resolveDependenciesAllComponents();
+    }
+
+    // 모든 컴포넌트들의 의존성 검사
+    public static void resolveDependenciesAllComponents(){
+        for (Class<?> cls : objects.keySet()){
+            Object o = objects.get(cls);
+
+            resolveDependencies(o);
+        }
+    }
+
+    // 컴포넌트들의 의존성 해결
+    public static void resolveDependencies(Object o){
+        // 오브젝트를 리스트로 받아와
+        Arrays.asList(o.getClass().getDeclaredFields())
+                // 문자열로 반환 시켜
+                .stream()
+                // 필터링을 통해 AutoWired인 필드만 들고오고
+                .filter(f->f.isAnnotationPresent(AutoWired.class))
+                // map 요소에 접근하게 만들어주고
+                .map(field -> {field.setAccessible(true); return field;
+                })
+                // 향상된 반복문 == forEach
+                .forEach(field -> {
+                    Class cls = field.getType();
+                    Object dependency = objects.get(cls);
+                    try {
+                        field.set(o,dependency);
+                    } catch (IllegalAccessException e) {
+                    }
+                });
+
     }
 
     public static void scanService(){
