@@ -65,4 +65,12 @@ public class AppTest {
 
         assertThat(articleService1).isEqualTo(articleService2);
     }
+
+    @Test
+    public void ioc__resolveComponents(){
+        ArticleController articleController = Container.getObj(ArticleController.class);
+        ArticleService articleService = articleController.getArticleServiceTest();
+
+        assertThat(articleService).isNotNull();
+    }
 }
