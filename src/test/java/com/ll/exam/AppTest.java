@@ -18,4 +18,12 @@ public class AppTest {
 
         assertThat(articleController).isNotNull();
     }
+
+    @Test
+    public void ioc__articleController__2() {
+        ArticleController articleController1 = Container.getArticleController();
+        ArticleController articleController2 = Container.getArticleController();
+
+        assertThat(articleController1).isEqualTo(articleController2);
+    }
 }
