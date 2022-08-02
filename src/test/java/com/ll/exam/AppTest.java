@@ -1,6 +1,7 @@
 package com.ll.exam;
 
 import com.ll.exam.article.controller.ArticleController;
+import com.ll.exam.article.repository.ArticleRepository;
 import com.ll.exam.article.service.ArticleService;
 import com.ll.exam.home.article.HomeController;
 import org.junit.jupiter.api.Test;
@@ -72,5 +73,19 @@ public class AppTest {
         ArticleService articleService = articleController.getArticleServiceTest();
 
         assertThat(articleService).isNotNull();
+    }
+
+    @Test
+    public void ioc__articleRepository(){
+        ArticleRepository articleRepository = Container.getObj(ArticleRepository.class);
+        assertThat(articleRepository).isNotNull();
+    }
+
+    @Test
+    public void ioc__articleRepository__withSingleton(){
+        ArticleRepository articleRepository1 = Container.getObj(ArticleRepository.class);
+        ArticleRepository articleRepository2 = Container.getObj(ArticleRepository.class);
+
+        assertThat(articleRepository1).isEqualTo(articleRepository2);
     }
 }

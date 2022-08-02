@@ -3,8 +3,6 @@ package com.ll.exam;
 import com.ll.exam.annotation.AutoWired;
 import com.ll.exam.annotation.Controller;
 import com.ll.exam.annotation.Service;
-import com.ll.exam.article.controller.ArticleController;
-import com.ll.exam.home.article.HomeController;
 import org.reflections.Reflections;
 
 import java.util.*;
