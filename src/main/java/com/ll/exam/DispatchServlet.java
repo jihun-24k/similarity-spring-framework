@@ -1,3 +1,5 @@
+package com.ll.exam;
+
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -11,6 +13,7 @@ public class DispatchServlet extends HttpServlet {
     //조회
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        ControllerManager.runAction(req, resp);
     }
 
     //등록
