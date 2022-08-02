@@ -14,7 +14,7 @@ public class AppTest {
 
     @Test
     public void ioc__articleController() {
-        ArticleController articleController = Con.getArticleController();
+        ArticleController articleController = Container.getArticleController();
 
         assertThat(articleController).isNotNull();
     }
