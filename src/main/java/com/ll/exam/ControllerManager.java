@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.reflections.Reflections;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,8 +24,8 @@ public class ControllerManager {
     private static void scanMappings() {
         Reflections ref = new Reflections(App.BASE_PACKAGE_PATH);
         // Controller 클래스 네임 + GetMapping의 uri
-        for (Class<?> cl : ref.getTypesAnnotatedWith(Controller.class)) {
-            Method[] methods = cl.getDeclaredMethods();
+        for (Class<?> controllerCls : ref.getTypesAnnotatedWith(Controller.class)) {
+            Method[] methods = controllerCls.getDeclaredMethods();
 
             for (Method method : methods) {
                 GetMapping getMapping = method.getAnnotation(GetMapping.class);
@@ -42,7 +43,7 @@ public class ControllerManager {
 
                     String key = httpMethod + "___" + actionPath;
 
-                    routeInfos.put(key, new RouteInfo(path, actionPath, method));
+                    routeInfos.put(key, new RouteInfo(path, actionPath, controllerCls, method));
                 }
             }
         }
@@ -67,7 +68,22 @@ public class ControllerManager {
             return;
         }
 
-        rq.println("해당 요청은 존재합니다.");
+        runAction(rq, routeInfos.get(mappingKey));
+    }
+
+    private static void runAction(Rq rq, RouteInfo routeInfo) {
+        Class controllerCls = routeInfo.getControllerCls();
+        Method actionMethod = routeInfo.getMethod();
+
+        Object controllerObj = Container.getObj(controllerCls);
+
+        try {
+            actionMethod.invoke(controllerObj, rq);
+        } catch (IllegalAccessException e) {
+            rq.println("액션시작에 실패하였습니다.");
+        } catch (InvocationTargetException e) {
+            rq.println("액션시작에 실패하였습니다.");
+        }
     }
 
     public static void init() {

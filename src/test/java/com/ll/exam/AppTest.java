@@ -109,7 +109,8 @@ public class AppTest {
     @Test
     public void ControllerManager__routeInfoTest() {
         Map<String, RouteInfo> routeInfos = ControllerManager.getRouteInfosForTest();
+        System.out.println(routeInfos);
 
-        assertThat(routeInfos.size()).isEqualTo(2);
+        assertThat(routeInfos.size()).isEqualTo(3);
     }
 }
