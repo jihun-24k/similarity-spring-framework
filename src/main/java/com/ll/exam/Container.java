@@ -4,6 +4,7 @@ import com.ll.exam.annotation.AutoWired;
 import com.ll.exam.annotation.Controller;
 import com.ll.exam.annotation.Repository;
 import com.ll.exam.annotation.Service;
+import com.ll.exam.mymap.MyMap;
 import com.ll.exam.util.Util;
 import org.reflections.Reflections;
 
@@ -21,9 +22,14 @@ public class Container {
         scanRepositories();
         scanServices();
         scanControllers();
+        scanCustom();
 
         // 모든 컴포넌트들을 의존성을 해결해주는 메소드
         resolveDependenciesAllComponents();
+    }
+    // 강제로 MyMap을 객체화 시켜서 컨테이너에 넣어준다.
+    private static void scanCustom() {
+        objects.put(MyMap.class, new MyMap(App.DB_HOST, App.DB_PORT, App.DB_ID, App.DB_PASSWORD, App.DB_NAME));
     }
 
     // 모든 컴포넌트들의 의존성 검사
